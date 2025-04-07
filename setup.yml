@@ -1,14 +1,13 @@
 ---
 - name: Azure Infrastructure Deployment
   hosts: localhost
-  connection: local
+
   vars:
     resource_group: KE02_groep02_RG
     location: West Europe
     virtual_network: main
     address_prefixes: "10.0.0.0/16"
     admin_username: azureuser
-    ssh_key_path: "keys/azureuser.pub"
 
   tasks:
     # Create Virtual Network

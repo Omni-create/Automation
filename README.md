@@ -12,3 +12,10 @@
 
  delete.yml
  Delete de omgeving
+ 
+ 
+ TO FIX:
+ - setup_software.yml zorgen dat het Prometheus & Grafana niet alleen download maar ook installeert en configureert.
+ - setup_software.yml native maken (zorgen dat het op alle soorten systemen uitgevoerd kan worden)
+ - setup.yml poorten openen binnen de NSGs.
+ - setup.sh interface maken met keuzes en de mogelijkheid geven credentials in de cli toe te voegen

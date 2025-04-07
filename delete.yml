@@ -1,0 +1,88 @@
+---
+- name: Cleanup Azure Infrastructure
+  hosts: localhost
+  connection: local
+  vars:
+    resource_group: KE02_groep02_RG  # Zorg dat deze overeenkomt met je originele playbook
+    location: West Europe
+
+  tasks:
+    # Verwijder VMs eerst (afhankelijk van NICs en disks)
+    - name: Delete virtual machines
+      azure_rm_virtualmachine:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - "vm-front-end"
+        - "vm-back-end"
+        - "vm-stepping-stone"
+      ignore_errors: yes  # Voor het geval een VM al verwijderd is
+
+    # Verwijder NICs (afhankelijk van NSGs en public IPs)
+    - name: Delete network interfaces
+      azure_rm_networkinterface:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}-nic"
+        state: absent
+      loop:
+        - "vm-front-end"
+        - "vm-back-end"
+        - "vm-stepping-stone"
+      ignore_errors: yes
+
+    # Verwijder public IPs
+    - name: Delete public IP addresses
+      azure_rm_publicipaddress:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}-public-ip"
+        state: absent
+      loop:
+        - "vm-front-end"
+        - "vm-stepping-stone"  # Alleen VMs met public IP
+      ignore_errors: yes
+
+    # Verwijder NSGs
+    - name: Delete network security groups
+      azure_rm_securitygroup:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - "front-end"
+        - "back-end"
+        - "stepping-stone"
+      ignore_errors: yes
+
+    # Verwijder subnets (moet voor VNet verwijdering)
+    - name: Delete subnets
+      azure_rm_subnet:
+        resource_group: "{{ resource_group }}"
+        virtual_network: "main"
+        name: "{{ item }}"
+        state: absent
+      loop:
+        - "front-end"
+        - "back-end"
+        - "stepping-stone"
+      ignore_errors: yes
+
+    # Verwijder virtual network
+    - name: Delete virtual network
+      azure_rm_virtualnetwork:
+        resource_group: "{{ resource_group }}"
+        name: "main"
+        state: absent
+      ignore_errors: yes
+
+    # Verwijder eventuele overgebleven disks
+    - name: Delete OS disks
+      azure_rm_manageddisk:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}-osdisk"
+        state: absent
+      loop:
+        - "vm-front-end"
+        - "vm-back-end"
+        - "vm-stepping-stone"
+      ignore_errors: yes

@@ -67,7 +67,7 @@ while true; do
       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       pip3 install azure-cli-core --break-system-packages
       pip3 install msrest azure-mgmt-compute azure-mgmt-network azure-mgmt-resource --break-system-packages
-      ansible-galaxy collection install azure.azcollection
+      az login --use-device-code
       echo "Setup voltooid."
       ;;
     3)

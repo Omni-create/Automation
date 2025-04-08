@@ -1,0 +1,20 @@
+---
+- import_playbook: setup.yml
+
+- name: Install MariaDB on back-end
+  hosts: vm-back-end
+  become: true
+  tasks:
+    - name: Install latest version of MariaDB
+      ansible.builtin.package:
+        name: mariadb-server
+        state: latest
+
+- name: Install NGINX on front-end
+  hosts: vm-front-end
+  become: true
+  tasks:
+    - name: Install latest version of NGINX
+      ansible.builtin.package:
+        name: nginx
+        state: latest

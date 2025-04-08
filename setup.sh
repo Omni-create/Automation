@@ -72,18 +72,18 @@ while true; do
       ;;
     3)
       echo "Draait playbook: setup.yml"
-      ansible-playbook setup.yml
+      ansible-playbook /playbooks/setup.yml
       ;;
     4)
       echo "Draait playbook: setup_software.yml"
-      ansible-playbook setup_software.yml
+      ansible-playbook /playbooks/setup_software.yml
       ;;
     5)
       echo "Draait playbook: delete.yml (verwijdert omgeving)"
-      ansible-playbook delete.yml
+      ansible-playbook /playbooks/delete.yml
       ;;
     6)
-      echo "Tot de volgende keer!"
+      echo "Tot de volgende keer :)!"
       exit 0
       ;;
     *)

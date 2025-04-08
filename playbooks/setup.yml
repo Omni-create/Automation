@@ -10,7 +10,6 @@
     admin_username: azureuser
 
   tasks:
-    # Create Virtual Network
     - name: Create Virtual Network
       azure_rm_virtualnetwork:
         resource_group: "{{ resource_group }}"
@@ -18,7 +17,6 @@
         location: "{{ location }}"
         address_prefixes: "{{ address_prefixes }}"
 
-    # Create subnets
     - name: Create subnets
       azure_rm_subnet:
         resource_group: "{{ resource_group }}"
@@ -30,7 +28,6 @@
         - { name: "back-end", prefix: "10.0.1.0/24" }
         - { name: "stepping-stone", prefix: "10.0.2.0/24" }
 
-    # Create Network Security Groups (NSGs)
     - name: Create Network Security Groups (NSGs)
       command: >
         az network nsg create
@@ -42,7 +39,6 @@
         - { name: "back-end" }
         - { name: "stepping-stone" }
 
-    # Create Network Interface for Virtual Machine
     - name: Create Network Interface for Virtual Machine
       azure_rm_networkinterface:
         resource_group: "{{ resource_group }}"
@@ -62,7 +58,6 @@
         - { name: "vm-back-end", subnet: "back-end", nsg: "back-end", public_ip: false, private_ip: "10.0.1.4" }
         - { name: "vm-stepping-stone", subnet: "stepping-stone", nsg: "stepping-stone", public_ip: true, private_ip: "10.0.2.4" }
 
-    # Create Virtual Machines
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
         resource_group: "{{ resource_group }}"

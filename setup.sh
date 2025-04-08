@@ -66,7 +66,6 @@ while true; do
       export PATH=$PATH:~/.local/bin
       curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       pip3 install azure-cli-core --break-system-packages
-      pip3 install msrest azure-mgmt-compute azure-mgmt-network azure-mgmt-resource --break-system-packages
       az login --use-device-code
       echo "Setup voltooid."
       ;;

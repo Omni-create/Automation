@@ -15,29 +15,29 @@ subnets:
 
 # VM configuratie
 vm_configs:
-  - name: "vm-front-end"
+  - name: "front-end"
     subnet: "front-end"
     nsg: "front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "vm-back-end" 
+  - name: "back-end" 
     subnet: "back-end"
     nsg: "back-end"
     public_ip: false
     private_ip: "10.0.1.4"
-  - name: "vm-stepping-stone"
+  - name: "stepping-stone"
     subnet: "stepping-stone"
     nsg: "stepping-stone"
     public_ip: true
     private_ip: "10.0.2.4"
     
 pub_vm_configs:
-  - name: "vm-front-end"
+  - name: "front-end"
     subnet: "front-end"
     nsg: "front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "vm-stepping-stone"
+  - name: "stepping-stone"
     subnet: "stepping-stone"
     nsg: "stepping-stone"
     public_ip: true

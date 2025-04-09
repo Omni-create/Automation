@@ -16,7 +16,7 @@
     - name: Create subnets
       azure_rm_subnet:
         resource_group: "{{ resource_group }}"
-        virtual_network_name: "{{ virtual_network }}"  # Ook hier aanpassen
+        virtual_network_name: "{{ virtual_network }}"  
         name: "{{ item.name }}"
         address_prefix: "{{ item.prefix }}"
       loop: "{{ subnets }}"
@@ -24,25 +24,9 @@
     - name: Create NSGs
       azure_rm_securitygroup:
         resource_group: "{{ resource_group }}"
-        name: "{{ item }}"  # Aangepast van item.name naar item
+        name: "{{ item }}"  
         location: "{{ location }}"
       loop: "{{ subnets | map(attribute='name') }}"
-      
-    - name: Create Network Interfaces
-      azure_rm_networkinterface:
-        resource_group: "{{ resource_group }}"
-        name: "{{ item.name }}-nic"
-        location: "{{ location }}"
-        virtual_network_name: "{{ virtual_network }}"  # Gewijzigde parameter
-        subnet_name: "{{ item.subnet }}"
-        security_group: "{{ item.nsg }}"
-        ip_configurations:
-          - name: ipconfig1
-            private_ip_address: "{{ item.private_ip }}"
-            private_ip_allocation_method: Static
-            public_ip_address_name: "{{ item.name }}-pip"
-            public_ip_allocation_method: "{{ 'Static' if item.public_ip else 'Dynamic' }}"
-      loop: "{{ pub_vm_configs }}"
 
     - name: Create Virtual Machines
       azure_rm_virtualmachine:

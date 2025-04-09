@@ -1,20 +1,39 @@
 ---
-- import_playbook: setup.yml
-
 - name: Install MariaDB on back-end
   hosts: vm-back-end
   become: true
-  tasks:
-    - name: Install latest version of MariaDB
-      ansible.builtin.package:
-        name: mariadb-server
-        state: latest
+  vars_files:
+    - ../group_vars/back_end.yml
 
-- name: Install NGINX on front-end
+  tasks:
+    - name: Install MariaDB Server and dependancies on back-end
+      apt:
+        name: [wget, curl, tar, mariadb-server]
+        state: latest
+        update_cache: yes
+
+- name: Install NGINX and dependancies on front-end on front-end
   hosts: vm-front-end
   become: true
+  vars_files:
+    - ../group_vars/front_end.yml
+
   tasks:
-    - name: Install latest version of NGINX
-      ansible.builtin.package:
-        name: nginx
+    - name: Install NGINX
+      apt:
+        name: [wget, curl, tar, nginx]
         state: latest
+        update_cache: yes
+        
+- name: Install dependancies on stepping-stone
+  hosts: vm-front-end
+  become: true
+  vars_files:
+    - ../group_vars/front_end.yml
+
+  tasks:
+    - name: Install NGINX
+      apt:
+        name: [wget, curl, tar, nginx]
+        state: latest
+        update_cache: yes

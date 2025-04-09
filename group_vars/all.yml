@@ -1,0 +1,60 @@
+---
+# Globale Azure configuratie
+resource_group: KE02_groep02_RG
+location: West Europe
+admin_username: azureuser
+admin_password: "YourSecurePassword123!"
+
+# Netwerkconfiguratie
+virtual_network: main
+address_prefixes: "10.0.0.0/16"
+subnets:
+  - { name: "front-end", prefix: "10.0.0.0/24" }
+  - { name: "back-end", prefix: "10.0.1.0/24" }
+  - { name: "stepping-stone", prefix: "10.0.2.0/24" }
+
+# VM configuratie
+vm_configs:
+  - name: "vm-front-end"
+    subnet: "front-end"
+    nsg: "front-end"
+    public_ip: true
+    private_ip: "10.0.0.4"
+  - name: "vm-back-end" 
+    subnet: "back-end"
+    nsg: "back-end"
+    public_ip: false
+    private_ip: "10.0.1.4"
+  - name: "vm-stepping-stone"
+    subnet: "stepping-stone"
+    nsg: "stepping-stone"
+    public_ip: true
+    private_ip: "10.0.2.4"
+    
+pub_vm_configs:
+  - name: "vm-front-end"
+    subnet: "front-end"
+    nsg: "front-end"
+    public_ip: true
+    private_ip: "10.0.0.4"
+  - name: "vm-stepping-stone"
+    subnet: "stepping-stone"
+    nsg: "stepping-stone"
+    public_ip: true
+    private_ip: "10.0.2.4"
+#VM
+vm_size: Standard_B1ls
+
+# Disk configuratie
+os_disk_caching: ReadWrite
+managed_disk_type: Standard_LRS
+
+# Image configuratie
+image:
+  offer: ubuntu-24_04-lts
+  publisher: Canonical
+  sku: server
+  version: latest
+
+# Optioneel: voeg deze toe als je meerdere images gebruikt
+vm_image: "{{ image }}"

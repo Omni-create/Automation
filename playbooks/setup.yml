@@ -2,12 +2,8 @@
 - name: Azure Infrastructure Deployment
   hosts: localhost
 
-  vars:
-    resource_group: KE02_groep02_RG
-    location: West Europe
-    virtual_network: main
-    address_prefixes: "10.0.0.0/16"
-    admin_username: azureuser
+  vars_files:
+    - ../group_vars/all.yml
 
   tasks:
     - name: Create Virtual Network
@@ -20,64 +16,46 @@
     - name: Create subnets
       azure_rm_subnet:
         resource_group: "{{ resource_group }}"
-        virtual_network: "{{ virtual_network }}"
+        virtual_network_name: "{{ virtual_network }}"  # Ook hier aanpassen
         name: "{{ item.name }}"
         address_prefix: "{{ item.prefix }}"
-      loop:
-        - { name: "front-end", prefix: "10.0.0.0/24" }
-        - { name: "back-end", prefix: "10.0.1.0/24" }
-        - { name: "stepping-stone", prefix: "10.0.2.0/24" }
+      loop: "{{ subnets }}"
 
-    - name: Create Network Security Groups (NSGs)
-      command: >
-        az network nsg create
-        --resource-group "{{ resource_group }}"
-        --name "{{ item.name }}"
-        --location "{{ location }}"
-      loop:
-        - { name: "front-end" }
-        - { name: "back-end" }
-        - { name: "stepping-stone" }
-
-    - name: Create Network Interface for Virtual Machine
+    - name: Create NSGs
+      azure_rm_securitygroup:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item }}"  # Aangepast van item.name naar item
+        location: "{{ location }}"
+      loop: "{{ subnets | map(attribute='name') }}"
+      
+    - name: Create Network Interfaces
       azure_rm_networkinterface:
         resource_group: "{{ resource_group }}"
         name: "{{ item.name }}-nic"
         location: "{{ location }}"
+        virtual_network_name: "{{ virtual_network }}"  # Gewijzigde parameter
         subnet_name: "{{ item.subnet }}"
-        virtual_network: "{{ virtual_network }}"
         security_group: "{{ item.nsg }}"
         ip_configurations:
           - name: ipconfig1
             private_ip_address: "{{ item.private_ip }}"
-            private_ip_allocation_method: "Static"
-            public_ip_address_name: "{{ item.name }}-public-ip"
+            private_ip_allocation_method: Static
+            public_ip_address_name: "{{ item.name }}-pip"
             public_ip_allocation_method: "{{ 'Static' if item.public_ip else 'Dynamic' }}"
-      loop:
-        - { name: "vm-front-end", subnet: "front-end", nsg: "front-end", public_ip: true, private_ip: "10.0.0.4" }
-        - { name: "vm-back-end", subnet: "back-end", nsg: "back-end", public_ip: false, private_ip: "10.0.1.4" }
-        - { name: "vm-stepping-stone", subnet: "stepping-stone", nsg: "stepping-stone", public_ip: true, private_ip: "10.0.2.4" }
+      loop: "{{ pub_vm_configs }}"
 
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
         resource_group: "{{ resource_group }}"
         name: "{{ item.name }}"
         location: "{{ location }}"
-        vm_size: Standard_B1ls
+        vm_size: "{{ vm_size }}"
         admin_username: "{{ admin_username }}"
-        admin_password: "YourSecurePassword123!"
-        ssh_password_enabled: yes
-        image:
-          offer: ubuntu-24_04-lts
-          publisher: Canonical
-          sku: server
-          version: latest
+        admin_password: "{{ admin_password }}"
+        image: "{{ vm_image }}"
+        subnet: "{{ item.name }}"
         os_disk_name: "{{ item.name }}-osdisk"
-        os_disk_caching: ReadWrite
-        managed_disk_type: Standard_LRS
-        network_interface_names:
-          - "{{ item.name }}-nic"
-      loop:
-        - { name: "vm-front-end" }
-        - { name: "vm-back-end" }
-        - { name: "vm-stepping-stone" }
+        os_disk_caching: "{{ os_disk_caching }}"
+        managed_disk_type: "{{ managed_disk_type }}"
+
+      loop: "{{ vm_configs }}"

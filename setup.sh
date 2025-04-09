@@ -57,6 +57,7 @@ while true; do
 	echo "export AZURE_TENANT=$AZURE_TENANT"
 	} >> ~/.profile
 	source ~/.profile
+	;;
     2)
       echo "Start volledige setup..."
       sudo apt update -y
@@ -71,15 +72,15 @@ while true; do
       ;;
     3)
       echo "Draait playbook: setup.yml"
-      ansible-playbook /playbooks/setup.yml
+      ansible-playbook ./playbooks/setup.yml
       ;;
     4)
-      echo "Draait playbook: setup_software.yml"
-      ansible-playbook /playbooks/setup_software.yml
+      echo "Draait playbook: software_setup.yml"
+      bash software_setup.sh
       ;;
     5)
       echo "Draait playbook: delete.yml (verwijdert omgeving)"
-      ansible-playbook /playbooks/delete.yml
+      ansible-playbook ./playbooks/delete.yml
       ;;
     6)
       echo "Tot de volgende keer :)!"

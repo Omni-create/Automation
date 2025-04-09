@@ -39,5 +39,5 @@ OPMERKINGEN:
   (Wanneer is dat wel nuttig?:
   Bij grote inventories waar je niet alle hosts handmatig wilt herhalen.
   Bij tijdelijke fouten zoals netwerkvertraging.)
-  Niet persé van toepassing bij deze casus :) ~ Osazuwa
+  Niet persé van toepassing bij deze casus :) ~ Osa
   

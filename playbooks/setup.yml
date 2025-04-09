@@ -24,7 +24,7 @@
     - name: Create NSGs
       azure_rm_securitygroup:
         resource_group: "{{ resource_group }}"
-        name: "{{ item.name }}"  
+        name: "nsg-{{ item.name }}"  
         location: "{{ location }}"
       loop: "{{ subnets }}"
       
@@ -34,7 +34,7 @@
         resource_group: "{{ resource_group }}"
         virtual_network_name:  "{{ virtual_network }}"
         address_prefix: "{{ item.prefix }}"
-        security_group: "{{ item.name }}"
+        security_group: "nsg-{{ item.name }}"
       loop: "{{ subnets }}"
 
     - name: Create Virtual Machines

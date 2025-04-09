@@ -30,41 +30,106 @@ subnets:
   - name: front-end 
     prefix: "10.0.0.0/24"
     rules:
-      - name: 'allow_ssh'
+      # Inbound rules
+      - name: 'allow_ssh_inbound'
         protocol: Tcp
+        source_address_prefix: "10.0.2.4/32"
+        destination_address_prefix: "10.0.0.4/32"
         destination_port_range: 22
         access: Allow
-        priority: 1001
+        priority: 1000
         direction: Inbound
 
-      - name: 'allow_http_https'
+      - name: 'allow_http_https_inbound'
         protocol: Tcp
         destination_port_range:
           - 80
           - 443
         access: Allow
-        priority: 1002
+        priority: 1010
         direction: Inbound
+
+      # Outbound rules
+      - name: 'allow_http_https_outbound'
+        protocol: Tcp
+        destination_port_range:
+          - 80
+          - 443
+        access: Allow
+        priority: 1010
+        direction: Outbound
+
+      - name: 'allow_mysql_outbound'
+        protocol: Tcp
+        source_address_prefix: "10.0.0.4/32"
+        destination_address_prefix: "10.0.1.4/32"
+        destination_port_range: 3306
+        access: Allow
+        priority: 1020
+        direction: Outbound
 
   - name: back-end
     prefix: "10.0.1.0/24"
     rules:
-      - name: 'allow_ssh'
+      # Inbound rules
+      - name: 'allow_ssh_inbound'
         protocol: Tcp
+        source_address_prefix: "10.0.2.4/32"
+        destination_address_prefix: "10.0.1.4/32"
         destination_port_range: 22
         access: Allow
-        priority: 1001
+        priority: 1000
         direction: Inbound
+
+      - name: 'allow_mysql_inbound'
+        protocol: Tcp
+        source_address_prefix: "10.0.0.4/32"
+        destination_address_prefix: "10.0.1.4/32"
+        destination_port_range: 3306
+        access: Allow
+        priority: 1020
+        direction: Inbound
+        
+      # Outbound rules
+      - name: 'allow_http_https_outbound'
+        protocol: Tcp
+        destination_port_range: 
+          - 80
+          - 443
+        access: Allow
+        priority: 1010
+        direction: Outbound
 
   - name: stepping-stone
     prefix: "10.0.2.0/24"
     rules:
-      - name: 'allow_ssh'
+      # Inbound rules
+      - name: 'allow_ssh_inbound'
         protocol: Tcp
         destination_port_range: 22
         access: Allow
-        priority: 1001
+        priority: 1000
         direction: Inbound
+
+      # Outbound rules
+      - name: 'allow_ssh_outbound1'
+        protocol: Tcp
+        source_address_prefix: "10.0.2.4/32"
+        destination_address_prefix: "10.0.0.4/32"
+        destination_port_range: 22
+        access: Allow
+        priority: 1000
+        direction: Outbound
+
+      - name: 'allow_ssh_outbound2'
+        protocol: Tcp
+        source_address_prefix: "10.0.2.4/32"
+        destination_address_prefix: "10.0.1.4/32"
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Outbound
+
 
 
 # VM configuratie

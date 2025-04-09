@@ -24,7 +24,7 @@
     - name: Create NSGs
       azure_rm_securitygroup:
         resource_group: "{{ resource_group }}"
-        name: "{{ item }}"  
+        name: "{{ item.name }}"  
         location: "{{ location }}"
       loop: "{{ subnets }}"
       

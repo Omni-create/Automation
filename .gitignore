@@ -3,3 +3,5 @@
 .playbooks/install_monitoring.ymlZone.Identifier
 .playbooks/setup.ymlZone.Identifier
 .playbooks/setup_software.ymlZone.Identifier
+.setup.shZone.Identifier
+.software_setup.shZone.Identifier

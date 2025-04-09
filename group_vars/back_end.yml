@@ -1,5 +1,2 @@
 ---
 # Back-end specifieke configuratie
-mariadb_version: latest
-database_name: app_db
-database_user: db_user

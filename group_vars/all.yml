@@ -1,9 +1,27 @@
+# Firewallconfiguratie
+#
+#back_firewall_rules:
+#  - port: 3306
+#    protocol: Tcp
+#    
+#front_firewall_rules:
+#  - port: 80
+#    protocol: Tcp
+#  - port: 443
+#    protocol: Tcp
+#    
+#stepping_firewall_rules:
+#  - port: 22
+#    protocol: Tcp
+    
 ---
 # Globale Azure configuratie
 resource_group: KE02_groep02_RG
 location: West Europe
 admin_username: azureuser
 admin_password: "YourSecurePassword123!"
+database_name: azure_database
+database_user: azure_user
 
 # Netwerkconfiguratie
 virtual_network: main
@@ -50,29 +68,29 @@ subnets:
 
 # VM configuratie
 vm_configs:
-  - name: "vm-front-end"
+  - name: "front-end"
     subnet: "front-end"
     nsg: "front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "vm-back-end" 
+  - name: "back-end" 
     subnet: "back-end"
     nsg: "back-end"
     public_ip: false
     private_ip: "10.0.1.4"
-  - name: "vm-stepping-stone"
+  - name: "stepping-stone"
     subnet: "stepping-stone"
     nsg: "stepping-stone"
     public_ip: true
     private_ip: "10.0.2.4"
     
 pub_vm_configs:
-  - name: "vm-front-end"
+  - name: "front-end"
     subnet: "front-end"
     nsg: "front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "vm-stepping-stone"
+  - name: "stepping-stone"
     subnet: "stepping-stone"
     nsg: "stepping-stone"
     public_ip: true

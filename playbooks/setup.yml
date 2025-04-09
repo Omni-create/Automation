@@ -26,6 +26,7 @@
         resource_group: "{{ resource_group }}"
         name: "{{ item }}"  
         location: "{{ location }}"
+#       rules: "{{ item.rules }}"
       loop: "{{ subnets | map(attribute='name') }}"
 
     - name: Create Virtual Machines

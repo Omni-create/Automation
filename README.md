@@ -1,30 +1,30 @@
 # Automation
  Keuzedeel AD jaar 1
 
- STRUCTUUR:
- Automation/
-├── inventory/
-│   └── inventory.ini          # Statisch inventory bestand
+ STRUCTUUR:<br />
+ Automation/ <br />
+├── inventory/ <br />
+│   └── inventory.ini          # Statisch inventory bestand <br />
+│ <br />
+├── playbooks/ <br />
+│   ├── setup.sh   <br />
+│   ├── setup.yml            <br />
+│   └── setup_software.yml     <br />
 │
-├── playbooks/
-│   ├── setup.sh   
-│   ├── setup.yml            
-│   └── setup_software.yml     
-│
-├── group_vars/				   # OPTIONEEL:
-│   └── all.yml                # Veel voorkomende variabelen definiëren.
-│
-├── host_vars/				   # OPTIONEEL:
-│   ├── vm-front-end.yml       # Front-end VM specific vars
-│   ├── vm-back-end.yml        # Back-end VM specific vars
-│   └── vm-stepping-stone.yml  # Stepping stone VM specific vars
-└── ansible.cfg                # Ansible configuration
+├── group_vars/				   # OPTIONEEL:<br />
+│   └── all.yml                # Veel voorkomende variabelen definiëren.<br />
+│<br />
+├── host_vars/				   # OPTIONEEL:<br />
+│   ├── vm-front-end.yml       # Front-end VM specific vars<br />
+│   ├── vm-back-end.yml        # Back-end VM specific vars<br />
+│   └── vm-stepping-stone.yml  # Stepping stone VM specific vars<br />
+└── ansible.cfg                # Ansible configuration<br />
  
  
  TO CONSIDER:
 - Gebruik SSH Keys inpv wachtwoorden
 - Bewaar belangrijke informatie binnen Ansible Vault
-- Stricthostkeychecking aan zetten i.v.m. MiTM-Attacks
+- Stricthostkeychecking aan zetten i.v.m. MiTM-Attacks --> Besproken met Marcel, de nadruk word in dit keuzedeel op Automation gezet dus dit zetten we niet aan.
 
  TO FIX:
  - setup_software.yml zorgen dat het Prometheus & Grafana niet alleen download maar ook installeert en configureert.

@@ -24,9 +24,19 @@
     - name: Create NSGs
       azure_rm_securitygroup:
         resource_group: "{{ resource_group }}"
-        name: "{{ item }}"  # Aangepast van item.name naar item
+        name: "{{ item.name }}"  # Aangepast van item.name naar item
         location: "{{ location }}"
-      loop: "{{ subnets | map(attribute='name') }}"
+        rules: "{{ item.rules }}"
+      loop: "{{ subnets }}"
+    
+    - name: Add NSG to subnets
+      azure_rm_subnet:
+        name: "{{ item.name }}"
+        resource_group: "{{ resource_group }}"
+        virtual_network_name:  "{{ virtual_network }}"
+        address_prefix: "{{ item.prefix }}"
+        security_group: "{{ item.name }}"
+      loop: "{{ subnets }}"
       
     - name: Create Network Interfaces
       azure_rm_networkinterface:

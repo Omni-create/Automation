@@ -9,9 +9,44 @@ admin_password: "YourSecurePassword123!"
 virtual_network: main
 address_prefixes: "10.0.0.0/16"
 subnets:
-  - { name: "front-end", prefix: "10.0.0.0/24" }
-  - { name: "back-end", prefix: "10.0.1.0/24" }
-  - { name: "stepping-stone", prefix: "10.0.2.0/24" }
+  - name: front-end 
+    prefix: "10.0.0.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+
+      - name: 'allow_http_https'
+        protocol: Tcp
+        destination_port_range:
+          - 80
+          - 443
+        access: Allow
+        priority: 1002
+        direction: Inbound
+
+  - name: back-end
+    prefix: "10.0.1.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+
+  - name: stepping-stone
+    prefix: "10.0.2.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
 
 # VM configuratie
 vm_configs:

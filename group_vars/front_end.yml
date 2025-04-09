@@ -1,8 +1,2 @@
 ---
 # Front-end specifieke configuratie
-nginx_version: latest
-firewall_rules:
-  - port: 80
-    protocol: Tcp
-  - port: 443
-    protocol: Tcp

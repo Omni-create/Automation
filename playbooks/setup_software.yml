@@ -1,39 +1,41 @@
 ---
 - name: Install MariaDB on back-end
-  hosts: vm-back-end
+  hosts: back-end
   become: true
   vars_files:
-    - ../group_vars/back_end.yml
-
+    - ../group_vars/all.yml
   tasks:
-    - name: Install MariaDB Server and dependancies on back-end
+    - name: Installing dependancies & MariaDB-server on back-end..
       apt:
         name: [wget, curl, tar, mariadb-server]
         state: latest
         update_cache: yes
+        
+        
 
 - name: Install NGINX and dependancies on front-end on front-end
-  hosts: vm-front-end
+  hosts: front-end
   become: true
   vars_files:
-    - ../group_vars/front_end.yml
-
+    - ../group_vars/all.yml
   tasks:
-    - name: Install NGINX
+    - name: Installing dependancies & NGINX on front-end..
       apt:
         name: [wget, curl, tar, nginx]
         state: latest
         update_cache: yes
         
+        
+        
 - name: Install dependancies on stepping-stone
-  hosts: vm-front-end
+  hosts: stepping-stone
   become: true
   vars_files:
-    - ../group_vars/front_end.yml
+    - ../group_vars/all.yml
 
   tasks:
-    - name: Install NGINX
+    - name: Installing dependancies on stepping-stone..
       apt:
-        name: [wget, curl, tar, nginx]
+        name: [wget, curl, tar]
         state: latest
         update_cache: yes

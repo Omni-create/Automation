@@ -41,5 +41,4 @@
         os_disk_name: "{{ item.name }}-osdisk"
         os_disk_caching: "{{ os_disk_caching }}"
         managed_disk_type: "{{ managed_disk_type }}"
-
       loop: "{{ vm_configs }}"

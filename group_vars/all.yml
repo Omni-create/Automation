@@ -1,9 +1,27 @@
+# Firewallconfiguratie
+#
+#back_firewall_rules:
+#  - port: 3306
+#    protocol: Tcp
+#    
+#front_firewall_rules:
+#  - port: 80
+#    protocol: Tcp
+#  - port: 443
+#    protocol: Tcp
+#    
+#stepping_firewall_rules:
+#  - port: 22
+#    protocol: Tcp
+    
 ---
 # Globale Azure configuratie
 resource_group: KE02_groep02_RG
 location: West Europe
 admin_username: azureuser
 admin_password: "YourSecurePassword123!"
+database_name: azure_database
+database_user: azure_user
 
 # Netwerkconfiguratie
 virtual_network: main

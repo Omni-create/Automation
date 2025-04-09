@@ -30,7 +30,7 @@
  - setup_software.yml zorgen dat het Prometheus & Grafana niet alleen download maar ook installeert en configureert.
  - setup_software.yml native maken (zorgen dat het op alle soorten systemen uitgevoerd kan worden)
  - setup.yml poorten openen binnen de NSGs.
- - delete.yml Binnen de Azure portal staan "public ipadresses" die om de 1 of de andere reden niet verwijderd willen worden.
+
  
  
  
@@ -38,7 +38,8 @@ FIXED:
  - setup.sh interface maken met keuzes en de mogelijkheid geven credentials in de cli toe te voegen
  - Bij het runnen van de setup worden alle vm's ineens in de 1e subnet geplaatst (front-end)
  - .gitignore file ff aanmaken
- 
+ - delete.yml Binnen de Azure portal staan "public ipadresses" die om de 1 of de andere reden niet verwijderd willen worden.
+  
 OPMERKINGEN:
  - "retry_files_enabled = False" --> "Insanity: doing the same thing over and over again and expecting different results." - Albert Einstein
   (Wanneer is dat wel nuttig?:

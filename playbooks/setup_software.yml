@@ -1,6 +1,6 @@
 ---
 - name: Install MariaDB on back-end
-  hosts: back-end
+  hosts: vm-back-end
   become: true
   vars_files:
     - ../group_vars/all.yml
@@ -14,7 +14,7 @@
         
 
 - name: Install NGINX and dependancies on front-end on front-end
-  hosts: front-end
+  hosts: vm-front-end
   become: true
   vars_files:
     - ../group_vars/all.yml
@@ -28,7 +28,7 @@
         
         
 - name: Install dependancies on stepping-stone
-  hosts: stepping-stone
+  hosts: vm-stepping-stone
   become: true
   vars_files:
     - ../group_vars/all.yml

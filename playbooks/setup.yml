@@ -26,7 +26,16 @@
         resource_group: "{{ resource_group }}"
         name: "{{ item }}"  
         location: "{{ location }}"
-      loop: "{{ subnets | map(attribute='name') }}"
+      loop: "{{ subnets }}"
+      
+    - name: Add NSG to subnets
+      azure_rm_subnet:
+        name: "{{ item.name }}"
+        resource_group: "{{ resource_group }}"
+        virtual_network_name:  "{{ virtual_network }}"
+        address_prefix: "{{ item.prefix }}"
+        security_group: "{{ item.name }}"
+      loop: "{{ subnets }}"
 
     - name: Create Virtual Machines
       azure_rm_virtualmachine:
@@ -37,7 +46,7 @@
         admin_username: "{{ admin_username }}"
         admin_password: "{{ admin_password }}"
         image: "{{ vm_image }}"
-        subnet: "{{ item.name }}"
+        subnet: "{{ item.subnet }}" #item.subnet of item.name?
         os_disk_name: "{{ item.name }}-osdisk"
         os_disk_caching: "{{ os_disk_caching }}"
         managed_disk_type: "{{ managed_disk_type }}"

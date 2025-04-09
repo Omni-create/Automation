@@ -27,37 +27,73 @@ database_user: azure_user
 virtual_network: main
 address_prefixes: "10.0.0.0/16"
 subnets:
-  - { name: "front-end", prefix: "10.0.0.0/24" }
-  - { name: "back-end", prefix: "10.0.1.0/24" }
-  - { name: "stepping-stone", prefix: "10.0.2.0/24" }
+  - name: front-end 
+    prefix: "10.0.0.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+
+      - name: 'allow_http_https'
+        protocol: Tcp
+        destination_port_range:
+          - 80
+          - 443
+        access: Allow
+        priority: 1002
+        direction: Inbound
+
+  - name: back-end
+    prefix: "10.0.1.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+
+  - name: stepping-stone
+    prefix: "10.0.2.0/24"
+    rules:
+      - name: 'allow_ssh'
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound
+
 
 # VM configuratie
 vm_configs:
-  - name: "front-end"
+  - name: "vm-front-end"
     subnet: "front-end"
-    nsg: "front-end"
+    nsg: "nsg-front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "back-end" 
+  - name: "vm-back-end" 
     subnet: "back-end"
-    nsg: "back-end"
+    nsg: "nsg-back-end"
     public_ip: false
     private_ip: "10.0.1.4"
-  - name: "stepping-stone"
+  - name: "vm-stepping-stone"
     subnet: "stepping-stone"
-    nsg: "stepping-stone"
+    nsg: "nsg-stepping-stone"
     public_ip: true
     private_ip: "10.0.2.4"
     
 pub_vm_configs:
-  - name: "front-end"
+  - name: "vm-front-end"
     subnet: "front-end"
-    nsg: "front-end"
+    nsg: "nsg-front-end"
     public_ip: true
     private_ip: "10.0.0.4"
-  - name: "stepping-stone"
+  - name: "vm-stepping-stone"
     subnet: "stepping-stone"
-    nsg: "stepping-stone"
+    nsg: "nsg-stepping-stone"
     public_ip: true
     private_ip: "10.0.2.4"
 #VM

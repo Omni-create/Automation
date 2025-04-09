@@ -28,20 +28,11 @@
     - name: Delete public IP addresses
       azure_rm_publicipaddress:
         resource_group: "{{ resource_group }}"
-        name: "{{ item }}-public-ip"
+        name: "{{ item }}-pip"
         state: absent
       loop:
         - "vm-front-end"
         - "vm-stepping-stone"  # Alleen VMs met public IP
-      ignore_errors: yes
-
-    # Verwijder NSGs
-    - name: Delete network security groups
-      azure_rm_securitygroup:
-        resource_group: "{{ resource_group }}"
-        name: "{{ item.nsg }}"
-        state: absent
-      loop: "{{ vm_configs }}"
       ignore_errors: yes
 
     # Verwijder subnets (moet voor VNet verwijdering)
@@ -50,6 +41,15 @@
         resource_group: "{{ resource_group }}"
         virtual_network: "{{ virtual_network }}"
         name: "{{ item.subnet }}"
+        state: absent
+      loop: "{{ vm_configs }}"
+      ignore_errors: yes
+
+    # Verwijder NSGs
+    - name: Delete network security groups
+      azure_rm_securitygroup:
+        resource_group: "{{ resource_group }}"
+        name: "{{ item.nsg }}"
         state: absent
       loop: "{{ vm_configs }}"
       ignore_errors: yes

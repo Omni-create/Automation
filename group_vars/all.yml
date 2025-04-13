@@ -1,19 +1,3 @@
-# Firewallconfiguratie
-#
-#back_firewall_rules:
-#  - port: 3306
-#    protocol: Tcp
-#    
-#front_firewall_rules:
-#  - port: 80
-#    protocol: Tcp
-#  - port: 443
-#    protocol: Tcp
-#    
-#stepping_firewall_rules:
-#  - port: 22
-#    protocol: Tcp
-    
 ---
 # Globale Azure configuratie
 resource_group: KE02_groep02_RG
@@ -35,35 +19,45 @@ subnets:
         protocol: Tcp
         source_address_prefix: "10.0.2.4/32"
         destination_address_prefix: "10.0.0.4/32"
-        destination_port_range: 22
+        destination_port_range: "22"
         access: Allow
         priority: 1000
         direction: Inbound
 
-      - name: 'allow_http_https_inbound'
+      - name: 'allow_http_inbound'
         protocol: Tcp
-        destination_port_range:
-          - 80
-          - 443
+        destination_port_range: "80"
         access: Allow
         priority: 1010
         direction: Inbound
 
-      # Outbound rules
-      - name: 'allow_http_https_outbound'
+      - name: 'allow_https_inbound'
         protocol: Tcp
-        destination_port_range:
-          - 80
-          - 443
+        destination_port_range: "443"
+        access: Allow
+        priority: 1011
+        direction: Inbound
+
+      # Outbound rules
+      - name: 'allow_http_outbound'
+        protocol: Tcp
+        destination_port_range: "80"
         access: Allow
         priority: 1010
+        direction: Outbound
+
+      - name: 'allow_https_outbound'
+        protocol: Tcp
+        destination_port_range: "443"
+        access: Allow
+        priority: 1011
         direction: Outbound
 
       - name: 'allow_mysql_outbound'
         protocol: Tcp
         source_address_prefix: "10.0.0.4/32"
         destination_address_prefix: "10.0.1.4/32"
-        destination_port_range: 3306
+        destination_port_range: "3306"
         access: Allow
         priority: 1020
         direction: Outbound
@@ -76,7 +70,7 @@ subnets:
         protocol: Tcp
         source_address_prefix: "10.0.2.4/32"
         destination_address_prefix: "10.0.1.4/32"
-        destination_port_range: 22
+        destination_port_range: "22"
         access: Allow
         priority: 1000
         direction: Inbound
@@ -85,19 +79,24 @@ subnets:
         protocol: Tcp
         source_address_prefix: "10.0.0.4/32"
         destination_address_prefix: "10.0.1.4/32"
-        destination_port_range: 3306
+        destination_port_range: "3306"
         access: Allow
         priority: 1020
         direction: Inbound
         
       # Outbound rules
-      - name: 'allow_http_https_outbound'
+      - name: 'allow_http_outbound'
         protocol: Tcp
-        destination_port_range: 
-          - 80
-          - 443
+        destination_port_range: "80"
         access: Allow
         priority: 1010
+        direction: Outbound
+
+      - name: 'allow_https_outbound'
+        protocol: Tcp
+        destination_port_range: "443"
+        access: Allow
+        priority: 1011
         direction: Outbound
 
   - name: stepping-stone
@@ -106,7 +105,7 @@ subnets:
       # Inbound rules
       - name: 'allow_ssh_inbound'
         protocol: Tcp
-        destination_port_range: 22
+        destination_port_range: "22"
         access: Allow
         priority: 1000
         direction: Inbound
@@ -116,7 +115,7 @@ subnets:
         protocol: Tcp
         source_address_prefix: "10.0.2.4/32"
         destination_address_prefix: "10.0.0.4/32"
-        destination_port_range: 22
+        destination_port_range: "22"
         access: Allow
         priority: 1000
         direction: Outbound
@@ -125,12 +124,10 @@ subnets:
         protocol: Tcp
         source_address_prefix: "10.0.2.4/32"
         destination_address_prefix: "10.0.1.4/32"
-        destination_port_range: 22
+        destination_port_range: "22"
         access: Allow
         priority: 1001
         direction: Outbound
-
-
 
 # VM configuratie
 vm_configs:
@@ -149,18 +146,7 @@ vm_configs:
     nsg: "nsg-stepping-stone"
     public_ip: true
     private_ip: "10.0.2.4"
-    
-pub_vm_configs:
-  - name: "vm-front-end"
-    subnet: "front-end"
-    nsg: "nsg-front-end"
-    public_ip: true
-    private_ip: "10.0.0.4"
-  - name: "vm-stepping-stone"
-    subnet: "stepping-stone"
-    nsg: "nsg-stepping-stone"
-    public_ip: true
-    private_ip: "10.0.2.4"
+
 #VM
 vm_size: Standard_B1ls
 

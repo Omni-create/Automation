@@ -7,7 +7,7 @@
   tasks:
     - name: Installing dependancies & MariaDB-server on back-end..
       apt:
-        name: [wget, curl, tar, mariadb-server]
+        name: [wget, curl, tar, mariadb-server, nethogs, git]
         state: latest
         update_cache: yes
         
@@ -21,7 +21,7 @@
   tasks:
     - name: Installing dependancies & NGINX on front-end..
       apt:
-        name: [wget, curl, tar, nginx]
+        name: [wget, curl, tar, nginx, nethogs, git]
         state: latest
         update_cache: yes
         
@@ -36,6 +36,6 @@
   tasks:
     - name: Installing dependancies on stepping-stone..
       apt:
-        name: [wget, curl, tar]
+        name: [wget, curl, tar, nethogs, git]
         state: latest
         update_cache: yes

@@ -27,8 +27,7 @@
 - Stricthostkeychecking aan zetten i.v.m. MiTM-Attacks --> Besproken met Marcel, de nadruk word in dit keuzedeel op Automation gezet dus dit zetten we niet aan.
 
  TO FIX:
- - setup_software.yml zorgen dat het Prometheus & Grafana niet alleen download maar ook installeert en configureert.
- - setup_software.yml native maken (zorgen dat het op alle soorten systemen uitgevoerd kan worden)
+- 
 
 FIXED:
  - setup.sh interface maken met keuzes en de mogelijkheid geven credentials in de cli toe te voegen

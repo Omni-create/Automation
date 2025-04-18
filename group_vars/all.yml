@@ -2,13 +2,13 @@
 # Globale Azure configuratie
 resource_group: KE02_groep02_RG
 location: West Europe
-admin_username: azureuser
-admin_password: "YourSecurePassword123!"
+admin_username: azureadmin
+admin_password: "P@ssword1"
 database_name: azure_database
 database_user: azure_user
 
 # Netwerkconfiguratie
-virtual_network: main
+virtual_network: Vnet-Casus
 address_prefixes: "10.0.0.0/16"
 subnets:
   - name: front-end 

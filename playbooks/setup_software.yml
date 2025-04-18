@@ -10,31 +10,35 @@
         name: [wget, curl, tar, mariadb-server, nethogs, git]
         state: latest
         update_cache: yes
-        
-        
+      environment:
+        DEBIAN_FRONTEND: noninteractive
 
-- name: Install NGINX and dependancies on front-end on front-end
+- name: Install NGINX and dependancies on front-end
   hosts: vm-front-end
   become: true
   vars_files:
     - ../group_vars/all.yml
   tasks:
+    - name: Disable Ubuntu pro news prompt on front-end
+      command: sudo pro config set apt_news=false
+
     - name: Installing dependancies & NGINX on front-end..
+      environment:
+        DEBIAN_FRONTEND: noninteractive
       apt:
         name: [wget, curl, tar, nginx, nethogs, git]
         state: latest
         update_cache: yes
-        
-        
-        
+
 - name: Install dependancies on stepping-stone
   hosts: vm-stepping-stone
   become: true
   vars_files:
     - ../group_vars/all.yml
-
   tasks:
     - name: Installing dependancies on stepping-stone..
+      environment:
+        DEBIAN_FRONTEND: noninteractive
       apt:
         name: [wget, curl, tar, nethogs, git]
         state: latest

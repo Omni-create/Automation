@@ -39,6 +39,13 @@ sshpass -p "$STEPPING_STONE_PASSWORD" ssh -o StrictHostKeyChecking=no "$STEPPING
   else
     echo "Ansible is al geïnstalleerd."
   fi
+
+  if ! command -v sshpass &> /dev/null; then
+    echo "sshpass niet gevonden. sshpass wordt geïnstalleerd..."
+    sudo apt-get update && sudo apt-get install -y sshpass
+  else
+    echo "sshpass is al geïnstalleerd."
+  fi
 EOF
 
 echo "Het Ansible playbook wordt uitgevoerd op de stepping-stone server..."
